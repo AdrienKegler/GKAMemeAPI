@@ -1,0 +1,26 @@
+#All path MUST start by /api/
+
+index:
+   path: /api/
+   controller: App\Controller\DefaultController::index
+
+index_detailed_url:
+   path: /api/index
+   controller: App\Controller\DefaultController::index
+
+user_index:
+  path: /api/user
+  controller: App\Controller\UserController::index
+
+
+file_index:
+   path: /api/file
+   controller: App\Controller\FileController::index
+
+save_file:
+   path: /api/file/upload
+   controller: App\Controller\FileController::saveFile
+
+get_file_by_id:
+   path: /api/file/get/{id}
+   controller: App\Controller\FileController::getFile
