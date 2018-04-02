@@ -4,8 +4,12 @@ use App\Kernel;
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 
 require __DIR__.'/../vendor/autoload.php';
+header("Access-Control-Allow-Headers: Access-Control-Allow, Access-Control-Allow-Origin, Authorization, Content-Type");
+header("Access-Control-Allow-Origin: *");
 
 // The check is to ensure we don't use .env in production
 if (!isset($_SERVER['APP_ENV'])) {
@@ -32,8 +36,14 @@ if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? false) {
     Request::setTrustedHosts(explode(',', $trustedHosts));
 }
 
+
 $kernel = new Kernel($env, $debug);
+
 $request = Request::createFromGlobals();
+if ('OPTIONS' == $request->getRealMethod()) {
+    return new Response();
+}
+
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);
