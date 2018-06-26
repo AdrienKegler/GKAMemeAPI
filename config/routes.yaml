@@ -33,3 +33,16 @@ get_file_by_id:
   path: /api/file/get/{id}
   controller: App\Controller\FileController::getFile
   methods:  [GET]
+
+
+
+
+app.swagger_ui:
+    path: /api/doc
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger_ui }
+
+app.swagger:
+    path: /api/doc.json
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger }
