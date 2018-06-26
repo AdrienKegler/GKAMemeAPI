@@ -64,7 +64,7 @@ class File
     private $isPrivate = FALSE;
 
     /**
-     * Many Groups have Many Users.
+     * Many Groups have Many User.
      * @ORM\ManyToMany(targetEntity="Tag", mappedBy="files")
      */
     private $tags;

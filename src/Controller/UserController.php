@@ -8,20 +8,19 @@ use App\Entity\UserStatus;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 
 class UserController extends Controller
 {
-    /**
-     * @Route("/api/user", name="user")
-     */
     public function index()
     {
         return $this->json(getdate());
     }
 
-    /**
-     * @Route("/api/user/subscribe", name="user")
-     */
+
     public function register(Request $request)
     {
         $post = json_decode($request->getContent(), true);
@@ -30,6 +29,11 @@ class UserController extends Controller
 
         $statusRepository = $this->getDoctrine()
             ->getRepository(UserStatus::class);
+
+        $duplicata = $this->getDoctrine()->getRepository(User::class)->findOneByEMail($post["email"]);
+        if (!empty($duplicata)) {
+            return new JsonResponse(["message" => "This e-mail is already recorded", "userPrompt" => true], 409);
+        }
 
 
         $user = new User();
@@ -46,5 +50,17 @@ class UserController extends Controller
         return $this->json([
             'message' => 'You registered !'
         ]);
+    }
+
+
+    public function getUser($id = null)
+    {
+        $user = $this->json($this->getDoctrine()
+            ->getRepository(User::class)
+            ->findOneById($id));
+
+        return empty($user)
+            ? new JsonResponse(["message" => "No user found with this ID", "userPrompt" => false], 404)
+            : $user;
     }
 }
