@@ -12,3 +12,6 @@
 .idea/php.xml
 .idea/php.xml
 .idea/phpGKAMeme.iml
+
+### Migrations folder ###
+/src/Migrations
